@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,4 +42,11 @@ public class StoreController {
 
         return storeDetails;  // Trả về thông tin cửa hàng
     }
+
+    // @PostMapping("/store/add-films")
+    // public ResponseEntity<String> addFilm(@RequestBody Film film) {
+    //     // Logic thêm phim vào cơ sở dữ liệu
+    //     filmService.addFilm(film);
+    //     return ResponseEntity.ok("Film added successfully!");
+    // }
 }
