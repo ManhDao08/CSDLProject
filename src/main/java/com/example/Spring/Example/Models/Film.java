@@ -31,14 +31,14 @@ public class Film {
     @Column(name = "rental_duration")
     private Integer rentalDuration;  // Thời gian cho thuê
 
-    @Column(name = "rental_rate", precision = 5, scale = 2)
+    @Column(name = "rental_rate", precision = 5)
     private Double rentalRate;  // Tỷ lệ cho thuê
 
     @Column(name = "length")
     private Integer length;  // Chiều dài phim (có thể null)
 
-    @Column(name = "replacement_cost", precision = 5, scale = 2)
-    private Double replacementCost;  // Chi phí thay thế
+    @Column(name = "replacement_cost")
+    private Integer replacementCost;  // Chi phí thay thế
 
     @Column(name = "rating", length = 10)
     private String rating;  // Xếp hạng phim
@@ -138,7 +138,7 @@ public class Film {
 
     public Film(Long filmId, String title, String description, Integer releaseYear, Language language,
             Language originalLanguage, Integer rentalDuration, Double rentalRate, Integer length,
-            Double replacementCost, String rating) {
+            Integer replacementCost, String rating) {
         this.filmId = filmId;
         this.title = title;
         this.description = description;
@@ -227,11 +227,11 @@ public class Film {
         this.length = length;
     }
 
-    public Double getReplacementCost() {
+    public Integer getReplacementCost() {
         return replacementCost;
     }
 
-    public void setReplacementCost(Double replacementCost) {
+    public void setReplacementCost(Integer replacementCost) {
         this.replacementCost = replacementCost;
     }
 

@@ -27,7 +27,7 @@ public class Customer {
     private Store store;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "address_id")
+    @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = true)
     private Address address;
 
     @Column(name = "first_name", nullable = false, length = 45)
@@ -44,6 +44,9 @@ public class Customer {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "coin")
+    private int coin;
 
     public Customer() {
         this.active = true;
@@ -138,6 +141,14 @@ public class Customer {
         this.password = password;
     }
 
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -184,7 +195,6 @@ public class Customer {
         return true;
     }
 
-    
     @Override
     public String toString() {
         return "Customer [customerID=" + customerID + ", firstName=" + firstName

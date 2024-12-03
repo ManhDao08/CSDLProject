@@ -9,7 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,8 +25,9 @@ public class Store {
     @Column(name = "manager_staff_id")
     private int managerStaffID;
 
-    @Column(name = "address_id")
-    private int addressID;
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "address_id", referencedColumnName = "address_id")
+    private Address address;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Customer> customers = new ArrayList<>();
@@ -32,10 +35,9 @@ public class Store {
     public Store() {
     }
 
-    public Store(int storeID, int managerStaffID, int addressID) {
+    public Store(int storeID, int managerStaffID) {
         this.storeID = storeID;
         this.managerStaffID = managerStaffID;
-        this.addressID = addressID;
     }
 
     public int getStoreID() {
@@ -54,12 +56,12 @@ public class Store {
         this.managerStaffID = managerStaffID;
     }
 
-    public int getAddressID() {
-        return addressID;
+    public Address getAddressID() {
+        return this.address;
     }
 
-    public void setAddressID(int addressID) {
-        this.addressID = addressID;
+    public void setAddressID(Address address) {
+        this.address = address;
     }
 
     @Override
@@ -68,7 +70,6 @@ public class Store {
         int result = 1;
         result = prime * result + storeID;
         result = prime * result + managerStaffID;
-        result = prime * result + addressID;
         return result;
     }
 
@@ -85,7 +86,7 @@ public class Store {
             return false;
         if (managerStaffID != other.managerStaffID)
             return false;
-        if (addressID != other.addressID)
+        if (address != other.address)
             return false;
         return true;
     }
@@ -111,7 +112,7 @@ public class Store {
 
     @Override
     public String toString() {
-        return "Store [storeID=" + storeID + ", managerStaffID=" + managerStaffID + ", addressID=" + addressID + "]";
+        return "Store [storeID=" + storeID + ", managerStaffID=" + managerStaffID + ", addressID=" + address.getAddressId() + "]";
     }
     
 }
