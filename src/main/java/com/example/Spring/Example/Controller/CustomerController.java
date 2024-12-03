@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.Spring.Example.Models.Customer;
-import com.example.Spring.Example.Models.ResponseObject;
+import com.example.Spring.Example.Models.*;
 import com.example.Spring.Example.Repositories.CustomerRepo;
+import com.example.Spring.Example.Repositories.StaffRepo;
 import com.example.Spring.Example.Service.CustomerService;
 
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +26,9 @@ public class CustomerController {
 
     @Autowired
     CustomerRepo customerRepo;
+
+    @Autowired
+    StaffRepo staffRepo;
 
     @GetMapping("/register")
     public String getRegisterPage() {
@@ -58,10 +61,14 @@ public class CustomerController {
         // Xử lý đăng nhập tại đây
         // Kiểm tra thông tin đăng nhập
         Customer customer = customerRepo.findByEmailAndPassword(email, password).orElse(null);
+        Staff staff = staffRepo.findByEmailAndPassword(email, password).orElse(null);
         if (customer != null) {
             session.setAttribute("currentCustomer", customer);
             return "redirect:/dashboard";
-        } 
+        } else if (staff != null) {
+            session.setAttribute("currentStaff", staff);
+            return "redirect:/dashboard";
+        }
         // Nếu thành công, chuyển hướng đến trang chính
         // Nếu thất bại, trả về trang đăng nhập với thông báo lỗi
         return "redirect:/login"; // Hoặc chuyển hướng đến trang lỗi nếu không đăng nhập được

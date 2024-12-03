@@ -17,7 +17,7 @@ public class Staff {
     @Column(name = "last_name", length = 45)
     private String lastName;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     private Address address;
 
@@ -93,6 +93,10 @@ public class Staff {
 
     public void setStore(Store store) {
         this.store = store;
+    }
+
+    public int getStoreID() {
+        return this.store.getStoreID();
     }
 
     public boolean isActive() {

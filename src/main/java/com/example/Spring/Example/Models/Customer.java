@@ -26,7 +26,7 @@ public class Customer {
     @JoinColumn(name = "store_id", referencedColumnName = "store_id", nullable = true)
     private Store store;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = true)
     private Address address;
 

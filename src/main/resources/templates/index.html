@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sidebar</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/table.css">
     <script src="/js/script.js" defer></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
@@ -37,7 +38,7 @@
                 <span class="tooltip">User</span>
             </li>
             <li>
-                <a href="">
+                <a href="javascript:void(0)" onclick="loadStoreContent()">
                     <i class='bx bx-chat'></i>
                     <span class="links_name">Store</span>
                 </a>
@@ -46,37 +47,23 @@
             <li>
                 <a href="">
                     <i class='bx bx-pie-chart-alt-2'></i>
-                    <span class="links_name">Analytics</span>
+                    <span class="links_name">Store-profile</span>
                 </a>
-                <span class="tooltip">Analytics</span>
+                <span class="tooltip">Store profile</span>
             </li>
             <li>
                 <a href="">
                     <i class='bx bx-folder'></i>
-                    <span class="links_name">Files</span>
+                    <span class="links_name">Rental</span>
                 </a>
-                <span class="tooltip">Files</span>
+                <span class="tooltip">Rental</span>
             </li>
             <li>
                 <a href="">
                     <i class='bx bx-cart-alt'></i>
-                    <span class="links_name">Order</span>
+                    <span class="links_name">History</span>
                 </a>
-                <span class="tooltip">Order</span>
-            </li>
-            <li>
-                <a href="">
-                    <i class='bx bx-heart'></i>
-                    <span class="links_name">Saved</span>
-                </a>
-                <span class="tooltip">Saved</span>
-            </li>
-            <li>
-                <a href="">
-                    <i class='bx bx-cog'></i>
-                    <span class="links_name">Settings</span>
-                </a>
-                <span class="tooltip">Settings</span>
+                <span class="tooltip">History</span>
             </li>
             <li class="profile">
                 <div class="profile-details">
@@ -90,9 +77,46 @@
             </li>
         </ul>
     </div>
-    <section class="home-section">
+    <section class="home-section" id="home-section">
         <div class="text">Dashboard</div>
     </section>
+
+    <script>
+        function loadStoreContent() {
+            fetch('/store/details')  
+                .then(response => response.json())
+                .then(data => {
+                    const section = document.getElementById('home-section');
+                    section.innerHTML = `
+                        <h2>Store Details</h2>
+                        <h3>Films</h3>
+                        ${generateTable(data.films)}
+                        <h3>Customers</h3>
+                        ${generateTable(data.customers)}
+                        <h3>Staff</h3>
+                        ${generateTable(data.staff)}
+                    `;
+                });
+        }
+
+        function generateTable(data) {
+            if (!data || data.length === 0) {
+                return "<p>No data available</p>";
+            }
+            const headers = Object.keys(data[0]);
+            const rows = data.map(item => {
+                return `<tr>${headers.map(header => `<td>${item[header]}</td>`).join('')}</tr>`;
+            }).join('');
+            return `
+                <table class="table">
+                    <thead>
+                        <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            `;
+        }
+    </script>
 </body>
 
 </html>
