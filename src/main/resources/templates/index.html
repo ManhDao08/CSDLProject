@@ -89,12 +89,13 @@
                     const section = document.getElementById('home-section');
                     section.innerHTML = `
                         <h2>Store Details</h2>
-                        <h3>Films</h3>
+                        <h3>Films <button onclick="showForm('films')">Add New</button></h3>
                         ${generateTable(data.films)}
-                        <h3>Customers</h3>
+                        <h3>Customers <button onclick="showForm('customers')">Add New</button></h3>
                         ${generateTable(data.customers)}
-                        <h3>Staff</h3>
+                        <h3>Staff <button onclick="showForm('staff')">Add New</button></h3>
                         ${generateTable(data.staff)}
+                        <div id="form-container"></div>  <!-- Nơi hiển thị form khi người dùng bấm vào "Add New" -->
                     `;
                 });
         }
@@ -105,16 +106,147 @@
             }
             const headers = Object.keys(data[0]);
             const rows = data.map(item => {
-                return `<tr>${headers.map(header => `<td>${item[header]}</td>`).join('')}</tr>`;
+                return `<tr>${headers.map(header => {
+                    // Kiểm tra nếu giá trị là đối tượng
+                    if (typeof item[header] === 'object' && item[header] !== null) {
+                        // Chọn thuộc tính muốn hiển thị của đối tượng, ví dụ "city" trong trường hợp đối tượng "address"
+                        if (item[header].address) {
+                            return `<td>${item[header].address}</td>`;  // Hiển thị thuộc tính "city" của đối tượng
+                        }
+                        if (item[header].hasOwnProperty('storeID')) {
+                            return `<td>${item[header].storeID}</td>`;  // Hiển thị cả storeID và storeName
+                        }
+                        return `<td>Object</td>`;  // Trả về "Object" nếu không có thuộc tính "city"
+                    } else {
+                        return `<td>${item[header]}</td>`;  // Nếu không phải đối tượng, hiển thị giá trị thông thường
+                    }
+                }).join('')}</tr>`;
             }).join('');
             return `
-                <table class="table">
-                    <thead>
-                        <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
-                    </thead>
-                    <tbody>${rows}</tbody>
-                </table>
+                <div class="table-container">
+                    <table border="1">
+                        <thead>
+                            <tr>${headers.map(header => `<th>${header}</th>`).join('')}</tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
             `;
+        }
+
+        function showForm(type) {
+            const formContainer = document.getElementById('form-container');
+            let formHtml = '';
+
+            // Tạo form tùy theo loại (films, customers, staff)
+            if (type === 'films') {
+                formHtml = `
+                    <h3>New Film</h3>
+                    <form id="film-form" onsubmit="handleSubmit(event, 'films')">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" name="title" required><br>
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" name="description"><br>
+                        <label for="language">Language:</label>
+                        <input type="text" id="language" name="language"><br>
+                        <label for="originalLanguage">Original Language:</label>
+                        <input type="text" id="originalLanguage" name="originalLanguage"><br>
+                        <label for="releaseYear">Release Year:</label>
+                        <input type="number" id="releaseYear" name="releaseYear" required><br>
+                        <label for="rentalDuration">Rental Duration:</label>
+                        <input type="number" id="rentalDuration" name="rentalDuration" required><br>
+                        <label for="replacementCost">Replacement Cost:</label>
+                        <input type="number" id="replacementCost" name="replacementCost" step="0.01" required><br>
+                        <button type="submit">Submit</button>
+                    </form>
+                `;
+            } else if (type === 'customers') {
+                formHtml = `
+                    <h3>New Customer</h3>
+                    <form id="customer-form" onsubmit="handleSubmit(event, 'customers')">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required><br>
+                        <label for="firstName">First Name:</label>
+                        <input type="text" id="firstName" name="firstName" required><br>
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" id="lastName" name="lastName" required><br>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required><br>
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" required><br>
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city" required><br>
+                        <label for="district">District:</label>
+                        <input type="text" id="district" name="district" required><br>
+                        <label for="phone">Phone:</label>
+                        <input type="text" id="phone" name="phone" required><br>
+                        <label for="postalCode">Postal Code:</label>
+                        <input type="text" id="postalCode" name="postalCode" required><br>
+                        <label for="coin">Coin:</label>
+                        <input type="number" id="coin" name="coin" step="0.01" required><br>
+                        <button type="submit">Submit</button>
+                    </form>
+                `;
+            } else if (type === 'staff') {
+                formHtml = `
+                    <h3>New Staff</h3>
+                    <form id="staff-form" onsubmit="handleSubmit(event, 'staff')">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required><br>
+                        <label for="firstName">First Name:</label>
+                        <input type="text" id="firstName" name="firstName" required><br>
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" id="lastName" name="lastName" required><br>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required><br>
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" required><br>
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city" required><br>
+                        <label for="district">District:</label>
+                        <input type="text" id="district" name="district" required><br>
+                        <label for="phone">Phone:</label>
+                        <input type="text" id="phone" name="phone" required><br>
+                        <label for="postalCode">Postal Code:</label>
+                        <input type="text" id="postalCode" name="postalCode" required><br>
+                        <button type="submit">Submit</button>
+                    </form>
+                `;
+            }
+
+            // Hiển thị form vào container
+            formContainer.innerHTML = formHtml;
+        }
+
+        function handleSubmit(event, type) {
+            event.preventDefault();  // Ngăn chặn form gửi đi ngay lập tức
+
+            const form = event.target;
+            let formData = new FormData(form);
+            let data = {};
+            
+            // Chuyển đổi FormData thành object
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Gửi dữ liệu đến server
+            fetch(`/store/add-${type}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert('Record added successfully!');
+                loadStoreContent();  // Tải lại dữ liệu sau khi thêm bản ghi mới
+            })
+            .catch(error => {
+                console.error('Error adding record:', error);
+                alert('Error adding record');
+            });
         }
     </script>
 </body>

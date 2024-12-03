@@ -17,15 +17,15 @@ public class Staff {
     @Column(name = "last_name", length = 45)
     private String lastName;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "address_id", referencedColumnName = "address_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "address_id", referencedColumnName = "address_id", unique = false)
     private Address address;
 
     @Column(name = "email")
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "store_id", referencedColumnName = "store_id", nullable = true)
+    @JoinColumn(name = "store_id", referencedColumnName = "store_id", nullable = true, unique = false)
     private Store store;
 
     @Column(name = "active")

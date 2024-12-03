@@ -1,209 +1,105 @@
-/* Đặt kiểu dáng chung cho body */
-body {
-    font-family: "Open Sans", sans-serif;
-    background-color: #e4e4e4;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-  
-  /* Định dạng cho thẻ .card */
-  .card {
-    background-color: #ffffff;
+/* CSS cho bảng */
+
+/* Thêm phần này vào file styles.css hoặc table.css của bạn */
+.table-container {
     width: 100%;
-    max-width: 100%;
-    max-height: 100%;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-  }
-  
-  /* Định dạng chung cho bảng */
-  .table-concept {
+    max-height: 350px; /* Tùy chỉnh chiều cao tối đa cho phần tử chứa bảng */
+    overflow: auto; /* Thêm thanh cuộn khi vượt quá chiều cao */
+    margin-top: 10px; /* Khoảng cách trên bảng */
+}
+
+table {
     width: 100%;
-    height: 100%;
-    max-height: 100%;
-    overflow: auto;
-    box-sizing: border-box;
-  }
-  
-  .table-radio {
-    display: none;
-  }
-  
-  .table-radio:checked + .table-display {
-    display: block;
-  }
-  
-  .table-radio:checked + .table-display + table {
-    width: 100%;
-    display: table;
-  }
-  
-  .table-radio:checked + .table-display + table + .pagination {
-    display: flex;
-  }
-  
-  .table-radio:checked + .table-display + table + .pagination > label.active {
-    color: #ffffff;
-    background-color: #8f8f8f;
-    cursor: default;
-  }
-  
-  .table-radio:checked + .table-display + table + .pagination > label.disabled {
-    color: #ffffff;
-    background-color: #d6d6d6;
-    cursor: default;
-  }
-  
-  .table-display {
-    background-color: #e2e2e2;
-    text-align: right;
-    padding: 10px;
-    display: none;
-    position: sticky;
-    left: 0;
-  }
-  
-  table {
-    background-color: #ffffff;
-    font-size: 16px;
     border-collapse: collapse;
-    display: none;
-  }
-  
-  table tr:last-child td {
-    border-bottom: 0;
-  }
-  
-  table th,
-  table td {
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px 15px;
     text-align: left;
-    padding: 15px;
-    box-sizing: border-box;
-  }
-  
-  table th {
-    color: #ffffff;
-    font-weight: normal;
-    background-color: #8f8f8f;
-    border-bottom: solid 2px #d8d8d8;
-    position: sticky;
-    top: 0;
-  }
-  
-  table td {
-    border: solid 1px #d8d8d8;
-    border-left: 0;
-    border-right: 0;
-    white-space: nowrap;
-  }
-  
-  table tbody tr {
-    transition: background-color 150ms ease-out;
-  }
-  
-  table tbody tr:nth-child(2n) {
-    background-color: #f4f4f4;
-  }
-  
-  table tbody tr:hover {
-    background-color: #d8d8d8;
-  }
-  
-  .pagination {
-    background-color: #8f8f8f;
-    width: 100%;
-    display: none;
-    position: sticky;
-    bottom: 0;
-    left: 0;
-  }
-  
-  .pagination > label {
-    background-color: #8f8f8f;
-    color: #ffffff;
-    padding: 10px;
-    cursor: pointer;
-  }
-  
-  /* Định dạng tiêu đề bảng */
-  .table-title {
-    color: #ffffff;
-    background-color: #2f2f2f;
-    padding: 15px;
-  }
-  
-  .table-title h2 {
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Định dạng cho các nút */
-  .button-container {
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .button-container span {
-    color: #8f8f8f;
-    text-align: right;
-    min-height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-  
-  .button-container button {
-    font-family: inherit;
-    font-size: inherit;
-    color: #ffffff;
-    padding: 10px 15px;
-    border: 0;
-    margin: 0;
-    outline: 0;
-    border-radius: 0;
-    transition: background-color 225ms ease-out;
-  }
-  
-  /* Các kiểu cho nút primary */
-  .button-container button.primary {
-    background-color: #147eff;
-  }
-  
-  .button-container button.primary:hover {
-    background-color: #2996ff;
-  }
-  
-  .button-container button.primary:active {
-    background-color: #0d6bff;
-  }
-  
-  /* Các kiểu cho nút danger */
-  .button-container button.danger {
-    background-color: #d11800;
-  }
-  
-  .button-container button.danger:hover {
-    background-color: #e34f55;
-  }
-  
-  .button-container button.danger:active {
-    background-color: #b31200;
-  }
-  
-  /* Định dạng cho icon trong nút */
-  .button-container button svg {
-    fill: #ffffff;
-    vertical-align: middle;
-    padding: 0;
-    margin: 0;
-  }
-  
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f4f9;
+    color: #333;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+table thead th {
+    background-color: #009688;
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+table tbody tr:hover {
+    background-color: #e3f2f1;
+}
+
+table tbody td {
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+        border: none;
+    }
+
+    th, td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    table thead {
+        display: none;
+    }
+
+    table tbody tr {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    table tbody td {
+        display: block;
+        text-align: right;
+        font-size: 12px;
+    }
+
+    table tbody td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: inline-block;
+        width: 120px;
+    }
+
+    #form-container {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        width: 300px;
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    form input, form button {
+        margin-bottom: 10px;
+        padding: 8px;
+    }
+    
+}
