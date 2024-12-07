@@ -34,17 +34,20 @@ public class Database {
                 //     store1.setAddressID(address); // Gán địa chỉ vào store
                 //     store1.setManagerStaffID(1);
                 //     storeRepo.save(store1);  // Lưu store vào cơ sở dữ liệu
-                //     Staff staff = new Staff();
-                //     staff.setFirstName("John");
-                //     staff.setLastName("Doe");
-                //     staff.setAddress(address);
-                //     staff.setEmail("johndoe@example.com");
-                //     staff.setStore(store1);
-                //     staff.setActive(true);
-                //     staff.setPassword("password123");
+
+                    // Address address = addressRepo.findById(1L).orElse(null);
+                    // Store store1 = storeRepo.findById(2).orElse(null);
+                    // Staff staff = new Staff();
+                    // staff.setFirstName("John");
+                    // staff.setLastName("Doe");
+                    // staff.setAddress(address);
+                    // staff.setEmail("johndoe@example.com");
+                    // staff.setStore(store1);
+                    // staff.setActive(true);
+                    // staff.setPassword("password123");
     
-                //     // Lưu đối tượng Staff vào cơ sở dữ liệu
-                //     staffRepo.save(staff);
+                    // // Lưu đối tượng Staff vào cơ sở dữ liệu
+                    // staffRepo.save(staff);
                 
                 // Tạo đối tượng Store cho staff2
                 // Store store2 = new Store();

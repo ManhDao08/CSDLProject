@@ -22,6 +22,15 @@ public class StoreService {
     @Autowired
     private InventoryRepo inventoryRepo;
 
+    @Autowired
+    private FilmRepo filmRepo;
+
+    @Autowired
+    private LanguageRepo languageRepo;
+
+    @Autowired
+    private AddressRepo addressRepo;
+
     public List<Film> getFilmsByStore(int storeId) {
         List<Inventory> inventories = inventoryRepo.findByStore_StoreID(storeId);
         List<Film> films = new ArrayList<>();
@@ -37,6 +46,55 @@ public class StoreService {
 
     public List<Staff> getStaffByStore(int storeId) {
         return staffRepo.findByStore_StoreID(storeId);  
+    }
+
+    public void addFilm(Film film, Store store) {
+        try {
+            Language language = film.getLanguage();
+            List<Language> names = languageRepo.findByName(language.getName());
+            Language oriLanguage = film.getOriginalLanguage();
+            List<Language> oriNames = languageRepo.findByName(oriLanguage.getName());
+            if (names == null || names.isEmpty()) {
+                languageRepo.save(language);
+            } else {
+                film.setLanguage(names.get(0));
+            }
+            if (oriNames == null || oriNames.isEmpty()) {
+                languageRepo.save(oriNames.get(0));
+            } else {
+                film.setOriginalLanguage(oriNames.get(0));
+            }
+            filmRepo.save(film);
+            Inventory newInventory = new Inventory();
+            newInventory.setFilm(film);
+            newInventory.setStore(store);
+            inventoryRepo.save(newInventory);
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+    }
+
+    public void addStaff(Staff staff) {
+        try {
+            Address address = staff.getAddress();
+            addressRepo.save(address);
+            staffRepo.save(staff);
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+    }
+
+    public void addCustomer(Customer customer) {
+        try {
+            Address address = customer.getAddress();
+            addressRepo.save(address);
+            customerRepo.save(customer);
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
     }
 }
 

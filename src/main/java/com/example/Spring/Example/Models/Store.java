@@ -29,9 +29,6 @@ public class Store {
     @JoinColumn(name = "address_id", referencedColumnName = "address_id")
     private Address address;
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = false)
-    private List<Customer> customers = new ArrayList<>();
-
     public Store() {
     }
 
@@ -89,25 +86,6 @@ public class Store {
         if (address != other.address)
             return false;
         return true;
-    }
-
-    public List<Customer> getCustomers() {
-        return customers;
-    }
-
-
-    public void setCustomers(List<Customer> customers) {
-        this.customers = customers;
-    }
-
-    public void addCustomer(Customer customer) {
-        customers.add(customer);
-        customer.setStore(this); // Đảm bảo mối quan hệ nghịch
-    }
-
-    public void removeCustomer(Customer customer) {
-        customers.remove(customer);
-        customer.setStore(null); // Hủy liên kết nghịch
     }
 
     @Override

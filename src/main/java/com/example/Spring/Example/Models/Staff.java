@@ -21,7 +21,7 @@ public class Staff {
     @JoinColumn(name = "address_id", referencedColumnName = "address_id", unique = false)
     private Address address;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @ManyToOne
@@ -29,7 +29,7 @@ public class Staff {
     private Store store;
 
     @Column(name = "active")
-    private boolean active;
+    private boolean active = true;
 
     private String password;
 

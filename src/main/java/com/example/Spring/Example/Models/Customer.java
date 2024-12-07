@@ -36,7 +36,7 @@ public class Customer {
     @Column(name = "last_name", nullable = false, length = 45)
     private String lastName;
 
-    @Column(name = "email", nullable = false, length = 50)
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
 
     @Column(name = "active", nullable = false)
@@ -75,14 +75,6 @@ public class Customer {
 
     public void setStore(Store store) {
         this.store = store;
-        if (store != null) {
-            if (store.getCustomers() == null) {
-                store.setCustomers(new ArrayList<>()); // Tạo danh sách nếu null
-            }
-            if (!store.getCustomers().contains(this)) {
-                store.getCustomers().add(this); // Thêm khách hàng vào Store
-            }
-        }
     }
 
     public String getFirstName() {
@@ -111,6 +103,10 @@ public class Customer {
 
     public Long getAddressID() {
         return address.getAddressId();
+    }
+
+    public Address getAddress() {
+        return this.address;
     }
 
     public void setAddress(Address address) {

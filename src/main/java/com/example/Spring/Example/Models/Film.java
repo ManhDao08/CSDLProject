@@ -11,7 +11,7 @@ public class Film {
     @Column(name = "film_id")
     private Long filmId;  // Khóa chính (film_id)
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, unique = true)
     private String title;  // Tên phim (không null)
 
     @Column(name = "description")

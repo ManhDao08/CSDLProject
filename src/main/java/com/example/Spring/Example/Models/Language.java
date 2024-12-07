@@ -11,7 +11,7 @@ public class Language {
     @Column(name = "language_id")
     private Integer languageId;
 
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "name", nullable = false, length = 50, unique = true)
     private String name;
 
     @Override

@@ -105,23 +105,27 @@
                 return "<p>No data available</p>";
             }
             const headers = Object.keys(data[0]);
-            const rows = data.map(item => {
-                return `<tr>${headers.map(header => {
-                    // Kiểm tra nếu giá trị là đối tượng
+            headers.push('Delete', 'Update');
+            const rows = data.map((item, index) => {
+            return `<tr>
+                ${headers.slice(0, -2).map(header => {
                     if (typeof item[header] === 'object' && item[header] !== null) {
-                        // Chọn thuộc tính muốn hiển thị của đối tượng, ví dụ "city" trong trường hợp đối tượng "address"
                         if (item[header].address) {
-                            return `<td>${item[header].address}</td>`;  // Hiển thị thuộc tính "city" của đối tượng
+                            return `<td>${item[header].address}</td>`;
                         }
                         if (item[header].hasOwnProperty('storeID')) {
-                            return `<td>${item[header].storeID}</td>`;  // Hiển thị cả storeID và storeName
+                            return `<td>${item[header].storeID}</td>`;
                         }
-                        return `<td>Object</td>`;  // Trả về "Object" nếu không có thuộc tính "city"
+                        return `<td>Object</td>`;
                     } else {
-                        return `<td>${item[header]}</td>`;  // Nếu không phải đối tượng, hiển thị giá trị thông thường
+                        return `<td>${item[header]}</td>`;
                     }
-                }).join('')}</tr>`;
-            }).join('');
+                }).join('')}
+                <td><img src="/images/Delete_Book_Icon.png" onclick="deleteRecord(${index})" style="cursor: pointer; width: 20px; height: 20px;"></td>
+                <td><img src="/images/Update_Book_Icon.png" onclick="updateRecord(${index})" style="cursor: pointer; width: 20px; height: 20px;"></td>
+            </tr>`;
+        }).join('');
+
             return `
                 <div class="table-container">
                     <table border="1">
@@ -152,12 +156,12 @@
                             <!-- Nhóm Language thành đối tượng con -->
                             <h4>Language</h4>
                             <label for="language">Language:</label>
-                            <input type="text" id="language" name="language.language" required><br>
+                            <input type="text" id="name" name="language.name" required><br>
 
                             <!-- Nhóm Original Language thành đối tượng con -->
                             <h4>Original Language</h4>
                             <label for="originalLanguage">Original Language:</label>
-                            <input type="text" id="originalLanguage" name="originalLanguage.language" required><br>
+                            <input type="text" id="name" name="originalLanguage.name" required><br>
 
                             <label for="releaseYear">Release Year:</label>
                             <input type="number" id="releaseYear" name="releaseYear" required><br>
@@ -186,7 +190,7 @@
                         <!-- Nhóm các thông tin liên quan đến địa chỉ vào đối tượng con -->
                         <h4>Address</h4>
                         <label for="addressLine">Address Line:</label>
-                        <input type="text" id="addressLine" name="address.addressLine" required><br>
+                        <input type="text" id="address" name="address.address" required><br>
                         <label for="city">City:</label>
                         <input type="text" id="city" name="address.city" required><br>
                         <label for="district">District:</label>
@@ -195,6 +199,7 @@
                         <input type="text" id="postalCode" name="address.postalCode" required><br>
                         <label for="phone">Phone:</label>
                         <input type="text" id="phone" name="address.phone" required><br>
+
                         <label for="coin">Coin:</label>
                         <input type="number" id="coin" name="coin" step="0.01" required><br>
                         <button type="submit">Submit</button>
@@ -215,7 +220,7 @@
                         <!-- Nhóm các thông tin liên quan đến địa chỉ vào đối tượng con -->
                         <h4>Address</h4>
                         <label for="addressLine">Address Line:</label>
-                        <input type="text" id="addressLine" name="address.addressLine" required><br>
+                        <input type="text" id="address" name="address.address" required><br>
                         <label for="city">City:</label>
                         <input type="text" id="city" name="address.city" required><br>
                         <label for="district">District:</label>
@@ -240,19 +245,25 @@
             let formData = new FormData(form);
             let data = {};
 
+            // Hàm gán giá trị cho object nhiều cấp
+            function setNestedValue(obj, keys, value) {
+                let current = obj;
+                for (let i = 0; i < keys.length - 1; i++) {
+                    if (!current[keys[i]]) {
+                        current[keys[i]] = {};  // Tạo object con nếu chưa tồn tại
+                    }
+                    current = current[keys[i]];
+                }
+                current[keys[keys.length - 1]] = value;  // Gán giá trị cuối cùng
+            }
+
             // Chuyển đổi FormData thành object
             formData.forEach((value, key) => {
-                // Kiểm tra nếu key là thuộc tính của một đối tượng con (ví dụ: "address.city")
-                const keys = key.split('.');  // Tách key ra nếu nó là thuộc tính của đối tượng con
-                if (keys.length > 1) {
-                    // Nếu có dấu '.' thì đó là thuộc tính con, ví dụ 'address.city'
-                    if (!data[keys[0]]) {
-                        data[keys[0]] = {};  // Tạo đối tượng con nếu chưa có
-                    }
-                    data[keys[0]][keys[1]] = value;  // Gán giá trị cho đối tượng con
-                } else {
-                    data[key] = value;  // Nếu không có dấu '.' thì đây là thuộc tính chính
+                const keys = key.split('.');  // Tách key thành các cấp
+                if (['releaseYear', 'rentalDuration', 'replacementCost', 'coin'].includes(keys[keys.length - 1])) {
+                    value = parseFloat(value);  // Chuyển đổi kiểu số
                 }
+                setNestedValue(data, keys, value);  // Gán giá trị vào object
             });
 
             // Gửi dữ liệu đến server
@@ -263,16 +274,31 @@
                 },
                 body: JSON.stringify(data),
             })
-            .then(response => response.json())
-            .then(result => {
-                alert('Record added successfully!');
-                loadStoreContent();  // Tải lại dữ liệu sau khi thêm bản ghi mới
-            })
-            .catch(error => {
-                console.error('Error adding record:', error);
-                alert('Error adding record');
-            });
+                .then((response) => response.text())
+                .then((text) => {
+                    alert('Record added successfully!');
+                    // Gọi hàm tải lại nội dung (nếu có)
+                    loadStoreContent();
+                })
+                .catch((error) => {
+                    console.error('Error:', error.message);
+                    alert('Error adding record' + error);
+                    loadStoreContent();
+                });
         }
+
+        // Hàm xóa bản ghi
+        function deleteRecord(index) {
+            alert("Xóa bản ghi ở chỉ số: " + index);
+            // Thực hiện xóa bản ghi từ dữ liệu hoặc cập nhật UI ở đây
+        }
+
+        // Hàm cập nhật bản ghi
+        function updateRecord(index) {
+            alert("Cập nhật bản ghi ở chỉ số: " + index);
+            // Thực hiện cập nhật thông tin bản ghi ở đây
+        }
+
 
     </script>
 </body>

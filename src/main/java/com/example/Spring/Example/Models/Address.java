@@ -11,7 +11,7 @@ public class Address {
     @Column(name = "address_id")
     private Long addressID;
 
-    @Column(name = "address", nullable = false, length = 255)
+    @Column(name = "address", nullable = false, length = 255, unique = true)
     private String address;
 
     @Column(name = "district", length = 155)
@@ -20,10 +20,10 @@ public class Address {
     @Column(name = "city_id", nullable = false, length = 100)
     private String cityID;
 
-    @Column(name = "postal_code", length = 15)
+    @Column(name = "postal_code", length = 15, unique = true)
     private String postalCode;
 
-    @Column(name = "phone", length = 25)
+    @Column(name = "phone", length = 25, unique = true)
     private String phone;
 
 
